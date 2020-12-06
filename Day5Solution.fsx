@@ -21,6 +21,8 @@
 
     BFFFBBFRRR: row 70, column 7, seat ID 567. FFFBBBFRRR: row 14, column 7, seat ID 119. BBFFBBFRLL: row 102, column 4, seat ID 820.
 *)
+open System.IO
+
 let day5input = 
     File.ReadAllLines("./Day5Input.txt")
     |> Array.map (fun x -> x.ToCharArray())
@@ -71,42 +73,44 @@ let rec reduceRange range (input: char list) =
                 }
         reduceRange range remainderOfList
 
-
-
 type InputRow =
     {
         RowInput : char list
         ColumnInput : char list
     }
 
-type Seat =
+type BoardingPass =
     {
         Row : int
         Column : int
+        SeatId: int
     }
-    member this.SeatId() = 
-        (this.Row * 8) + this.Column
 
 (*
     Part 1
     As a sanity check, look through your list of boarding passes. What is the highest seat ID on a boarding pass?
 *)
-let part1 () =
-    day5input
-    |> Array.map (fun x -> 
-        {
-            RowInput = x.[0..6] |> Array.toList
-            ColumnInput = x.[7..9] |> Array.toList
-        })
+let parseBoardingPasses (input : char [][]) =
+    let parsedBoardingPassCodes =
+        input
+        |> Array.map (fun x -> 
+            {
+                RowInput = x.[0..6] |> Array.toList
+                ColumnInput = x.[7..9] |> Array.toList
+            })
+    parsedBoardingPassCodes
     |> Array.map (fun x -> 
         let row = x.RowInput |> reduceRange Range.DefaultRowRange
         let column = x.ColumnInput |> reduceRange Range.DefaultColumnRange
-
         {
             Row = row
             Column = column
+            SeatId = (row * 8) + column
         })
-    |> Array.map (fun x -> x.SeatId())
+
+let part1 () =
+    parseBoardingPasses day5input
+    |> Array.map (fun x -> x.SeatId)
     |> Array.max
 
 (*
@@ -120,4 +124,22 @@ let part1 () =
     What is the ID of your seat?
 *)
 let part2 () =
+    // Get all possible seat numbers
+    let rowRange = Range.DefaultRowRange
+    let columnRange = Range.DefaultColumnRange
+    // Don't check the very front or very back of the plane
+    let allRowNumbers =  [rowRange.Lower + 1..rowRange.Upper - 1]
+    let allColumnNumbers = [columnRange.Lower..columnRange.Upper]
+    let allPossibleSeats = 
+        List.allPairs allRowNumbers allColumnNumbers
     
+    // Get all known boarding passes
+    let allBoardingPasses = parseBoardingPasses day5input
+    // Check which available seats aren't in the boarding pass list
+    allPossibleSeats 
+    // Find all of the rows that haven't been filled
+    |> List.filter (fun x -> not (allBoardingPasses |> Array.exists (fun y -> y.Row = (x |> fst) && y.Column = (x |> snd))))
+    // Convert the possible seats to their seat IDs
+    |> List.map (fun x -> ((fst x) * 8) + (snd x))
+    // Find the seat ID of our seat (only one of the options we've narrowed it down to should be directly between 2 known seat IDs)
+    |> List.filter (fun x -> allBoardingPasses |> Array.exists (fun y -> y.SeatId = x + 1) && allBoardingPasses |> Array.exists (fun y -> y.SeatId = x - 1))
