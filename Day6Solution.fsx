@@ -40,7 +40,7 @@ open System.IO
 open System
 
 (*
-    Part 1
+    --- Part 1 ---
 
     For each group, count the number of questions to which anyone answered "yes". What is the sum of those counts?
 *)
@@ -87,11 +87,6 @@ let part1 () =
 
     For each group, count the number of questions to which everyone answered "yes". What is the sum of those counts?
 *)
-type questionGroup =
-    {
-        GroupNumber : int
-        IndividualAnswers : Set<char>
-    }
 let part2 () = 
     // Modify the input function, as we now need to care about the distinct answers given by each individual
     File.ReadAllText("./Day6Input.txt").Split($"{Environment.NewLine}{Environment.NewLine}")
