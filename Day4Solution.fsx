@@ -34,6 +34,7 @@
 *)
 open System.IO
 open System
+open System.Text.RegularExpressions
 
 (*
     Start off by splitting the input into the distinct groups (assuming that the groups are split by double newlines),
@@ -123,19 +124,20 @@ let part1 () =
     iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
     Count the number of valid passports - those that have all required fields and valid values. Continue to treat cid as optional. In your batch file, how many passports are valid?
 *)
-let part2 () =
-    type IdentityData =
-        {
-            original: string
-            byr: int
-            ecl: string
-            eyr: int
-            hcl: string
-            hgt: int
-            iyr: int
-            pid: string
-        }
 
+type IdentityData =
+    {
+        original: string
+        byr: int
+        ecl: string
+        eyr: int
+        hcl: string
+        hgt: int
+        iyr: int
+        pid: string
+    }
+
+let part2 () =
     let between low high input =
         input >= low && input <= high
 
