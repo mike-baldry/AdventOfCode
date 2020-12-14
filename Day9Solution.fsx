@@ -115,29 +115,23 @@ To find the encryption weakness, add together the smallest and largest number in
 
 What is the encryption weakness in your XMAS-encrypted list of numbers?
 *)
-let rec findContiguousRange (numbers : int64 list) (index : int) (windowLength : int) (targetValue : int64) =
-    if (index + windowLength) > (numbers |> List.length) then
-        // if we've hit the end of the list using the current window size, loop back to the start and try a bigger window
-        findContiguousRange numbers 0 (windowLength + 1) targetValue
-    else
-        let currentWindow = 
-            // include the current index when calculating the total window length, so subtract 1 here
-            numbers.[index..(index + windowLength - 1)]
-
-        printfn $"Index: {index}, window length: {windowLength}, targetValue: {targetValue}, currentWindow: %A{currentWindow}"
-        if (currentWindow |> List.sum) = targetValue then
-            let min = currentWindow |> List.min
-            let max = currentWindow |> List.max
-            printfn $"Found answer: ({min},{max}), sum = {min + max}"
-            min + max
+let part2 () =
+    let rec findContiguousRange (numbers : int64 list) (index : int) (windowLength : int) (targetValue : int64) =
+        if (index + windowLength) > (numbers |> List.length) then
+            // if we've hit the end of the list using the current window size, loop back to the start and try a bigger window
+            findContiguousRange numbers 0 (windowLength + 1) targetValue
         else
-            findContiguousRange numbers (index + 1) windowLength targetValue
+            let currentWindow = 
+                // include the current index when calculating the total window length, so subtract 1 here
+                numbers.[index..(index + windowLength - 1)]
 
+            printfn $"Index: {index}, window length: {windowLength}, targetValue: {targetValue}, currentWindow: %A{currentWindow}"
+            if (currentWindow |> List.sum) = targetValue then
+                let min = currentWindow |> List.min
+                let max = currentWindow |> List.max
+                printfn $"Found answer: ({min},{max}), sum = {min + max}"
+                min + max
+            else
+                findContiguousRange numbers (index + 1) windowLength targetValue
 
-let part2Test = 
-    File.ReadAllLines("./Day9InputTestPart2.txt")
-    |> Array.map (fun n -> n |> int64)
-    |> Array.toList
-// start at index 0, and a minimum window size of 2, and work up from there
-let part2TestAnswer = findContiguousRange part2Test 0 2 127L
-let part2Answer = findContiguousRange allNumbers 0 2 258585477L
+    findContiguousRange allNumbers 0 2 258585477L
