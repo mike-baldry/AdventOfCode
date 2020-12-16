@@ -116,22 +116,21 @@ To find the encryption weakness, add together the smallest and largest number in
 What is the encryption weakness in your XMAS-encrypted list of numbers?
 *)
 let part2 () =
-    let rec findContiguousRange (numbers : int64 list) (index : int) (windowLength : int) (targetValue : int64) =
-        if (index + windowLength) > (numbers |> List.length) then
-            // if we've hit the end of the list using the current window size, loop back to the start and try a bigger window
-            findContiguousRange numbers 0 (windowLength + 1) targetValue
-        else
-            let currentWindow = 
-                // include the current index when calculating the total window length, so subtract 1 here
-                numbers.[index..(index + windowLength - 1)]
+    let rec findContiguousRange (numbers : int64 list) (windowLength : int) (targetValue : int64) =
+        let windows = 
+            numbers 
+            |> List.windowed windowLength
+        let answerWindow = 
+            windows 
+            |> List.filter (fun w -> (w |> List.sum) = targetValue)
+            |> List.tryHead
 
-            printfn $"Index: {index}, window length: {windowLength}, targetValue: {targetValue}, currentWindow: %A{currentWindow}"
-            if (currentWindow |> List.sum) = targetValue then
-                let min = currentWindow |> List.min
-                let max = currentWindow |> List.max
-                printfn $"Found answer: ({min},{max}), sum = {min + max}"
-                min + max
-            else
-                findContiguousRange numbers (index + 1) windowLength targetValue
+        match answerWindow with
+        | None -> findContiguousRange numbers (windowLength + 1) targetValue
+        | Some answer ->
+            let min = answer |> List.min
+            let max = answer |> List.max
+            printfn $"Found answer: ({min},{max}), sum = {min + max}"
+            (min + max)
 
-    findContiguousRange allNumbers 0 2 258585477L
+    findContiguousRange allNumbers 2 258585477L
