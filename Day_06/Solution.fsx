@@ -47,7 +47,7 @@ open System
 let part1 () =
     // Get a distinct set of questions for each group
     let allGroups =
-        File.ReadAllText("./Day6Input.txt").Split($"{Environment.NewLine}{Environment.NewLine}")
+        File.ReadAllText("./Day_06/Input.txt").Split($"{Environment.NewLine}{Environment.NewLine}")
         |> Array.map (fun x -> x.Replace(Environment.NewLine, "").ToCharArray() |> Set.ofArray)
     allGroups
     |> Array.map (fun x -> x |> Set.count)
@@ -89,7 +89,7 @@ let part1 () =
 *)
 let part2 () = 
     // Modify the input function, as we now need to care about the distinct answers given by each individual
-    File.ReadAllText("./Day6Input.txt").Split($"{Environment.NewLine}{Environment.NewLine}")
+    File.ReadAllText("./Day_06/Input.txt").Split($"{Environment.NewLine}{Environment.NewLine}")
     |> Array.map (fun group -> 
                 group.Split($"{Environment.NewLine}")
                 // Convert each line into its own set

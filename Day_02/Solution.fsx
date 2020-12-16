@@ -27,7 +27,7 @@ type PasswordRow =
         AttemptedPassword: char []
     }
 
-let day2Input = File.ReadAllText("./Day2Input.txt")
+let day2Input = File.ReadAllText("./Day_02/Input.txt")
 let pattern = @"(?<lower>\d+)-(?<upper>\d+) (?<target>\w){1}: (?<password>\w+)"
 let rows =
     Regex.Matches(day2Input, pattern, RegexOptions.Multiline)

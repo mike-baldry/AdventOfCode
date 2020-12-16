@@ -71,7 +71,7 @@ let part1 () =
             | NOP -> runBootCode accumulator (index + 1) updatedIndices instructionList
 
     let allInstructions = 
-        File.ReadAllLines("./Day8Input.txt")
+        File.ReadAllLines("./Day_08/Input.txt")
         |> Array.toList
 
     runBootCode 0 0 [] allInstructions
@@ -155,7 +155,7 @@ let part2 () =
                     | ans -> accumulator + ans
 
     let allInstructions = 
-        File.ReadAllLines("./Day8Input.txt")
+        File.ReadAllLines("./Day_08/Input.txt")
         |> Array.toList
 
     runBootCode 0 0 [] allInstructions false

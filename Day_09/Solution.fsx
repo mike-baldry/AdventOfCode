@@ -57,7 +57,7 @@ let rec combinations accumulator desiredListSize possibleListItems = seq {
 }
 
 let allNumbers = 
-    File.ReadAllLines("./Day9Input.txt")
+    File.ReadAllLines("./Day_09/Input.txt")
     |> Array.map (fun n -> n |> int64)
     |> Array.toList
 
@@ -124,7 +124,6 @@ let part2 () =
             windows 
             |> List.filter (fun w -> (w |> List.sum) = targetValue)
             |> List.tryHead
-
         match answerWindow with
         | None -> findContiguousRange numbers (windowLength + 1) targetValue
         | Some answer ->

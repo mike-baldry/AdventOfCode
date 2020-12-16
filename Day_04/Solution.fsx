@@ -41,7 +41,7 @@ open System.Text.RegularExpressions
     then cleaning up, splitting, and sorting the information for each group
 *) 
 let day4input = 
-    File.ReadAllText("./Day4input.txt").Split($"{Environment.NewLine}{Environment.NewLine}")
+    File.ReadAllText("./Day_04/Input.txt").Split($"{Environment.NewLine}{Environment.NewLine}")
     |> Array.map (fun x -> x.Replace(Environment.NewLine, " ").Replace("  ", " ") .Split(" ") |> Array.map (fun y -> y.Trim()) |> Array.sort )
 
 (*
@@ -178,21 +178,9 @@ let part2 () =
             let pid = matches.Groups.["pid"].Value
             
             tryCreateIdentityData inputRow byr ecl eyr hcl hgt hgtUnit iyr pid
-            // Some
-            //     {
-            //         original = inputRow
-            //         byr = byr
-            //         ecl = ecl
-            //         eyr = eyr
-            //         hcl = hcl
-            //         hgt = hgt
-            //         iyr = iyr
-            //         pid = pid
-            //     }
         else None
         
     day4input
     |> Array.map (fun x -> x |> Array.reduce (fun y z -> $"{y} {z}"))
-    // |> Array.reduce (fun x y -> $"{x}{Environment.NewLine}{y}")
     |> Array.choose parseRow
     |> Array.length

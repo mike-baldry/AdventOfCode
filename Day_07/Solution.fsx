@@ -44,7 +44,7 @@ let parseBagType inputLine =
     }
 
 let input =
-    File.ReadAllLines("./Day7Input.txt")
+    File.ReadAllLines("./Day_07/Input.txt")
     |> Array.map parseBagType
     |> Array.toList
 
@@ -115,7 +115,7 @@ type BagQuantity =
     }
 
 let part2() =
-    let allText = File.ReadAllLines("./Day7Input.txt") 
+    let allText = File.ReadAllLines("./Day_07/Input.txt") 
     let allBagLines = 
         allText 
         |> Array.map (fun x -> Regex.Match(x, @"^(?<bagType>\w* \w*) bags contain (?<containedBags>.*)\.$"))

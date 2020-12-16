@@ -24,7 +24,7 @@
 open System.IO
 
 let day5input = 
-    File.ReadAllLines("./Day5Input.txt")
+    File.ReadAllLines("./Day_05/Input.txt")
     |> Array.map (fun x -> x.ToCharArray())
 
 let (|Front|Back|Left|Right|) character =

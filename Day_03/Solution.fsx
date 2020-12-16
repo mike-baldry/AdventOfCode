@@ -49,7 +49,7 @@
 *)
 open System.IO
 
-let hill = File.ReadAllLines("./Day3Input.txt")
+let hill = File.ReadAllLines("./Day_03/Input.txt")
 
 (*
     Part 1
